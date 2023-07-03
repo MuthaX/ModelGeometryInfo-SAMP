@@ -1,6 +1,9 @@
 #if !defined __MODELGEOMETRY_INCLUDED__
 #define __MODELGEOMETRY_INCLUDED__
 #define MODELGEOMETRY_MODELS		(20000)
+//	AABB3 - Axis Aligned Bounding Box in 3 dimensions.
+//	Visual - in function name stands for information about visible model.
+//	Col - in function name stands for information about collision model.
 
 enum e_modelsize_aabb3_info {
 	Float:E_MIN_X,
@@ -20,9 +23,10 @@ enum e_modelsize_aabb3_line {
 	Float:E_MAX_Y,
 	Float:E_MAX_Z,
 };
-static stock Model_AABB3[MODELGEOMETRY_MODELS][e_modelsize_aabb3_info];
+static stock ModelVisual_AABB3[MODELGEOMETRY_MODELS][e_modelsize_aabb3_info];
 
-stock ModelSize_init(const filepath[]) {
+// Load information about visible part of objects (AABB3).
+stock ModelGeom_initVisual_AABB3(const filepath[]) {
 	new File:f = fopen(filepath, io_read),
 		line_info[e_modelsize_aabb3_line],
 		modelid
@@ -31,7 +35,7 @@ stock ModelSize_init(const filepath[]) {
 		while( fblockread(f, line_info, sizeof(line_info)) == sizeof(line_info) ) {
 			modelid = line_info[E_MODELID];
 			if( modelid > 0 && modelid < MODELGEOMETRY_MODELS ) {
-				memcpy(Model_AABB3[modelid], line_info[e_modelsize_aabb3_line:1], 0, 4 * sizeof(line_info), sizeof(line_info));
+				memcpy(ModelVisual_AABB3[modelid], line_info[e_modelsize_aabb3_line:1], 0, 4 * sizeof(line_info), sizeof(line_info));
 			}
 		}
 		fclose(f);
@@ -57,6 +61,7 @@ stock ModelGeom_parseBoxBounds(
 	max_z = aabb_info[E_MAX_Z];
 }
 
+//	Get bounds as AABB3 of visible object.
 stock ModelGeom_getVisualBoxBounds(
 	const modelid,
 	&Float:min_x,
@@ -67,12 +72,13 @@ stock ModelGeom_getVisualBoxBounds(
 	&Float:max_z
 ) {
 	if( modelid > 0 && modelid < MODELGEOMETRY_MODELS ) {
-		ModelGeom_parseBoxBounds(Model_AABB3[modelid], min_x, min_y, min_z, max_x, max_y, max_z);
+		ModelGeom_parseBoxBounds(ModelVisual_AABB3[modelid], min_x, min_y, min_z, max_x, max_y, max_z);
 	} else {
 		min_x = min_y = min_z = max_x = max_y = max_z = 0.0;
 	}
 }
 
+//	Get size of AABB3 of visible object.
 stock ModelGeom_getVisualBoxSize(
 	const modelid,
 	&Float:size_x,
@@ -82,12 +88,13 @@ stock ModelGeom_getVisualBoxSize(
 	new Float:min_x, Float:min_y, Float:min_z,
 		Float:max_x, Float:max_y, Float:max_z
 	;
-	ModelGeom_parseBoxBounds(Model_AABB3[modelid], min_x, min_y, min_z, max_x, max_y, max_z);
+	ModelGeom_parseBoxBounds(ModelVisual_AABB3[modelid], min_x, min_y, min_z, max_x, max_y, max_z);
 	size_x = max_x - min_x;
 	size_y = max_y - min_y;
 	size_z = max_z - min_z;
 }
 
+//	Get center position of AABB3 of visible object.
 stock ModelGeom_getVisualCenter(
 	const modelid,
 	&Float:pos_x,
@@ -97,7 +104,7 @@ stock ModelGeom_getVisualCenter(
 	new Float:min_x, Float:min_y, Float:min_z,
 		Float:max_x, Float:max_y, Float:max_z
 	;
-	ModelGeom_parseBoxBounds(Model_AABB3[modelid], min_x, min_y, min_z, max_x, max_y, max_z);
+	ModelGeom_parseBoxBounds(ModelVisual_AABB3[modelid], min_x, min_y, min_z, max_x, max_y, max_z);
 	size_x = 0.5 * (max_x - min_x);
 	size_y = 0.5 * (max_y - min_y);
 	size_z = 0.5 * (max_z - min_z);
