@@ -105,8 +105,8 @@ stock ModelGeom_getVisualCenter(
 		Float:max_x, Float:max_y, Float:max_z
 	;
 	ModelGeom_parseBoxBounds(ModelVisual_AABB3[modelid], min_x, min_y, min_z, max_x, max_y, max_z);
-	size_x = 0.5 * (max_x - min_x);
-	size_y = 0.5 * (max_y - min_y);
-	size_z = 0.5 * (max_z - min_z);
+	pos_x = 0.5 * (max_x - min_x);
+	pos_y = 0.5 * (max_y - min_y);
+	pos_z = 0.5 * (max_z - min_z);
 }
 #endif
