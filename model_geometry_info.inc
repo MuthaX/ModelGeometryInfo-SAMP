@@ -109,4 +109,29 @@ stock ModelGeom_getVisualCenter(
 	pos_y = 0.5 * (max_y - min_y);
 	pos_z = 0.5 * (max_z - min_z);
 }
+
+//	Get lowest X of object.
+stock Float:ModelGeom_getVisualMinX(const modelid) {
+	return ModelVisual_AABB3[modelid][E_MIN_X];
+}
+//	Get highest X of object.
+stock Float:ModelGeom_getVisualMaxX(const modelid) {
+	return ModelVisual_AABB3[modelid][E_MAX_X];
+}
+//	Get lowest Y of object.
+stock Float:ModelGeom_getVisualMinY(const modelid) {
+	return ModelVisual_AABB3[modelid][E_MIN_Y];
+}
+//	Get highest Y of object.
+stock Float:ModelGeom_getVisualMaxY(const modelid) {
+	return ModelVisual_AABB3[modelid][E_MAX_Y];
+}
+//	Get lowest Z of object.
+stock Float:ModelGeom_getVisualMinZ(const modelid) {
+	return ModelVisual_AABB3[modelid][E_MIN_Z];
+}
+//	Get highest Z of object.
+stock Float:ModelGeom_getVisualMaxZ(const modelid) {
+	return ModelVisual_AABB3[modelid][E_MAX_Z];
+}
 #endif
